@@ -4,49 +4,117 @@ import {
   NativeScrollEvent,
   NativeSyntheticEvent,
   Pressable,
-  RegisteredStyle,
   StyleProp,
   StyleSheet,
+  View,
   ViewStyle,
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { TAB_ICON_SIZE_RATIO } from "../../utility/constants/appConstants";
+import {
+  SHUTTER_HEIGHT,
+  SIZE_REF_2,
+  TAB_INDICATOR_HEIGHT,
+} from "../../utility/constants";
 import {
   CustomMaterialNavigatorProps,
   CustomMaterialScreenProps,
   TabItemProps,
-} from "../../utility/types/other_types";
-import AnimatedSafeAreaView from "../../utility/ui/animatedSafeAreaView";
+} from "../../utility/types";
+import { AnimatedSafeAreaView } from "../../utility/ui";
 import Icon from "./Icon";
 
 const TabItem = ({
-  activeColor,
-  icon,
-  inActiveColor,
+  activeIcon,
+  inActiveIcon,
   onPress,
-  width,
   size,
+  animationControlData,
+  width,
+  index,
 }: TabItemProps) => {
-  const itemDynamicStyle: StyleProp<ViewStyle> = useMemo(
-    () => ({ width }),
+  const tabItemDynamicStyle: StyleProp<ViewStyle> = useMemo(
+    () => ({
+      width,
+    }),
     [width]
+  );
+
+  const activeTabItemDynamicStyle = useMemo(
+    () => ({
+      opacity: animationControlData.interpolate({
+        inputRange: [width * (index - 1), width * index, width * (index + 1)],
+        outputRange: [0, 1, 0],
+        extrapolate: "clamp",
+      }),
+    }),
+    [animationControlData]
+  );
+
+  const inActiveTabItemDynamicStyle = useMemo(
+    () => ({
+      opacity: animationControlData.interpolate({
+        inputRange: [width * (index - 1), width * index, width * (index + 1)],
+        outputRange: [1, 0, 1],
+        extrapolate: "clamp",
+      }),
+    }),
+    [animationControlData]
   );
 
   return (
     //individual boxes to render in the navigation tabs
     <Pressable onPress={onPress} android_disableSound={true}>
-      <SafeAreaView edges={[]} style={[itemDynamicStyle, styles.tabItem]}>
-        <Icon color={activeColor} name={icon} size={size} />
-      </SafeAreaView>
+      <Animated.View
+        style={[styles.tabItem, tabItemDynamicStyle, activeTabItemDynamicStyle]}
+      >
+        <Icon name={activeIcon} color="black" size={size} />
+      </Animated.View>
+      <Animated.View
+        style={[
+          styles.tabItem,
+          tabItemDynamicStyle,
+          inActiveTabItemDynamicStyle,
+          styles.inActiveTabItem,
+        ]}
+      >
+        <Icon name={inActiveIcon} color="black" size={size} />
+      </Animated.View>
     </Pressable>
   );
 };
 
-// a utility component to render as a screen of the navigator
-export const SwippableTabScreen = ({ target }: CustomMaterialScreenProps) => {
+export const CustomMaterialScreen = ({ target }: CustomMaterialScreenProps) => {
   return target;
 };
+
+// const TabItem = ({
+//   activeColor,
+//   icon,
+//   inActiveColor,
+//   onPress,
+//   width,
+//   size,
+// }: TabItemProps) => {
+//   const itemDynamicStyle: StyleProp<ViewStyle> = useMemo(
+//     () => ({ width }),
+//     [width]
+//   );
+
+//   return (
+//     //individual boxes to render in the navigation tabs
+//     <Pressable onPress={onPress} android_disableSound={true}>
+//       <SafeAreaView edges={[]} style={[itemDynamicStyle, styles.tabItem]}>
+//         <Icon color={activeColor} name={icon} size={size} />
+//       </SafeAreaView>
+//     </Pressable>
+//   );
+// };
+
+// a utility component to render as a screen of the navigator
+// export const SwippableTabScreen = ({ target }: CustomMaterialScreenProps) => {
+//   return target;
+// };
 
 // custom naivagator which is embiddable in any screen component
 const SwippableTabNavigator = ({
@@ -56,8 +124,8 @@ const SwippableTabNavigator = ({
 }: CustomMaterialNavigatorProps) => {
   //specify the absolute width and height of the navigator
   const containerDynamicStyle: StyleProp<ViewStyle> = useMemo(
-    () => ({ width, height }),
-    [width, height]
+    () => ({ width: "100%", height }),
+    [height]
   );
 
   //an atomic data that produces the transition of the navigator based on its value
@@ -73,9 +141,11 @@ const SwippableTabNavigator = ({
   //sets the 'animationControlData' to the current scroll content offset
   const swipeHandler = useCallback(
     ({ nativeEvent }: NativeSyntheticEvent<NativeScrollEvent>) => {
-      animationControlData.setValue(nativeEvent.contentOffset.x);
+      animationControlData.setValue(
+        nativeEvent.contentOffset.x / children.length
+      );
     },
-    [animationControlData]
+    [animationControlData, children.length]
   );
 
   //calculates the width of the tab bar
@@ -87,9 +157,12 @@ const SwippableTabNavigator = ({
   );
 
   //calculates the width of the active tab indicator
-  const tabIndicatorDynamicStyle: StyleProp<ViewStyle> = useMemo(
-    () => ({ width: width / children.length, borderBottomWidth: 2 }),
-    [width]
+  const tabIndicatorDynamicStyle = useMemo(
+    () => ({
+      width: width / children.length,
+      left: animationControlData,
+    }),
+    [width, animationControlData, children.length]
   );
 
   //list of the icons associated to eash screen component of the navigator
@@ -97,11 +170,12 @@ const SwippableTabNavigator = ({
     () =>
       children.map((item, index) => (
         <TabItem
-          activeColor={item.props.activeColor}
-          icon={item.props.icon}
-          inActiveColor={item.props.inActiveColor}
-          key={"item" + index}
-          size={width * TAB_ICON_SIZE_RATIO}
+          key={"itemm" + index}
+          index={index}
+          activeIcon={item.props.activeIcon}
+          inActiveIcon={item.props.inActiveIcon}
+          animationControlData={animationControlData}
+          size={item.props.size}
           width={width / children.length}
           onPress={() => {
             scrollbarRef.current?.scrollTo({
@@ -116,29 +190,14 @@ const SwippableTabNavigator = ({
   );
 
   return (
-    <SafeAreaView edges={["left", "right"]}>
-      <SafeAreaView
-        edges={["left", "right"]}
-        style={[styles.tabItemContainer, tabBarDynamicStyle]}
-      >
-        {tabIconList}
-      </SafeAreaView>
-      <SafeAreaView edges={["left", "right"]} style={[tabBarDynamicStyle]}>
+    <SafeAreaView edges={["left", "right"]} style={[tabBarDynamicStyle]}>
+      <View style={[styles.tabItemContainer]}>{tabIconList}</View>
+      <View style={[tabBarDynamicStyle]}>
         <AnimatedSafeAreaView
           edges={[]}
-          style={[
-            styles.tabIndicator,
-            tabIndicatorDynamicStyle,
-            {
-              left: animationControlData.interpolate({
-                inputRange: [0, width * (children.length - 1)],
-                outputRange: [0, width - width / children.length],
-                extrapolate: "clamp",
-              }),
-            },
-          ]}
+          style={[styles.tabIndicator, tabIndicatorDynamicStyle]}
         ></AnimatedSafeAreaView>
-      </SafeAreaView>
+      </View>
       <SafeAreaView edges={[]} style={[containerDynamicStyle]}>
         <ScrollView
           showsHorizontalScrollIndicator={false}
@@ -147,6 +206,8 @@ const SwippableTabNavigator = ({
           pagingEnabled={true}
           onScroll={swipeHandler}
           ref={scrollbarRef}
+          style={styles.tabList}
+          contentContainerStyle={styles.tabListContentContainer}
         >
           {children}
         </ScrollView>
@@ -158,17 +219,28 @@ const SwippableTabNavigator = ({
 const styles = StyleSheet.create({
   tabIndicator: {
     borderBottomColor: "black",
+    borderBottomWidth: TAB_INDICATOR_HEIGHT,
   },
   tabItemContainer: {
-    alignItems: "center",
+    alignItems: "stretch",
     justifyContent: "space-around",
     flexWrap: "nowrap",
     flexDirection: "row",
   },
   tabItem: {
-    paddingVertical: 2,
+    paddingVertical: SIZE_REF_2,
+    flexWrap: "nowrap",
     alignItems: "center",
     justifyContent: "center",
+  },
+  inActiveTabItem: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+  },
+  tabList: { width: "100%", flex: 1 },
+  tabListContentContainer: {
+    paddingBottom: Math.floor((SHUTTER_HEIGHT * 4) / 25),
   },
 });
 

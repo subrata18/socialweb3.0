@@ -1,67 +1,22 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import { StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import {
   SHUTTER_BODY_LIST_ITEM_HEIGHT,
   SHUTTER_ICON_HORIZONTAL_MARGIN,
-  SHUTTER_ICON_SIZE,
   SHUTTER_ICON_VERTICAL_MARGIN,
   WINDOW_WIDTH,
-} from "../../utility/constants/appConstants";
-import RoundedIcon from "../RoundedIcon";
+} from "../../utility/constants";
 
-const ShutterBodyListItem = () => {
+export interface ShutterBodyListItemProps {
+  children: ReactNode;
+}
+
+const ShutterBodyListItem = ({ children }: ShutterBodyListItemProps) => {
   //renders all the icons of a specific page
   return (
     <SafeAreaView edges={[]} style={[styles.itemContainer]}>
-      <RoundedIcon
-        color="black"
-        dragEnabled={false}
-        name="tag"
-        tapEnabled={false}
-        size={SHUTTER_ICON_SIZE}
-        style={styles.icon}
-      />
-      <RoundedIcon
-        color="black"
-        dragEnabled={false}
-        name="more-option"
-        tapEnabled={false}
-        size={SHUTTER_ICON_SIZE}
-        style={styles.icon}
-      />
-      <RoundedIcon
-        color="black"
-        dragEnabled={false}
-        name="tag"
-        tapEnabled={false}
-        size={SHUTTER_ICON_SIZE}
-        style={styles.icon}
-      />
-      <RoundedIcon
-        color="black"
-        dragEnabled={false}
-        name="more-option"
-        tapEnabled={false}
-        size={SHUTTER_ICON_SIZE}
-        style={styles.icon}
-      />
-      <RoundedIcon
-        color="black"
-        dragEnabled={false}
-        name="tag"
-        tapEnabled={false}
-        size={SHUTTER_ICON_SIZE}
-        style={styles.icon}
-      />
-      <RoundedIcon
-        color="black"
-        dragEnabled={false}
-        name="more-option"
-        tapEnabled={false}
-        size={SHUTTER_ICON_SIZE}
-        style={styles.icon}
-      />
+      {children}
     </SafeAreaView>
   );
 };
@@ -76,10 +31,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     paddingLeft: SHUTTER_ICON_HORIZONTAL_MARGIN,
     paddingBottom: SHUTTER_ICON_VERTICAL_MARGIN,
-  },
-  icon: {
-    marginTop: SHUTTER_ICON_VERTICAL_MARGIN,
-    marginRight: SHUTTER_ICON_HORIZONTAL_MARGIN,
   },
 });
 

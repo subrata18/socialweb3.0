@@ -1,7 +1,6 @@
 import { SafeAreaView } from "react-native-safe-area-context";
-import { globalColors } from "../utility/style/colors";
-import { globalLayouts } from "../utility/style/layout";
 import React from "react";
+import { globalColors, globalLayouts } from "../utility/styles";
 
 const NotificationScreen = () => {
   return (

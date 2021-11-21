@@ -6,9 +6,7 @@ import {
 import { NavigationContainer } from "@react-navigation/native";
 import React, { useCallback, useEffect, useState } from "react";
 import { enableScreens } from "react-native-screens";
-import ImageFeedScreen from "./screens/ImageFeedScreen";
 import NotificationScreen from "./screens/NotificationScreen";
-import ProfileScreen from "./screens/ProfileScreen";
 import SearchResultScreen from "./screens/SearchResultScreen";
 import TrendingScreen from "./screens/TrendingScreen";
 import { MainTabNavigationParamList } from "./utility/types/navigation_types";
@@ -18,6 +16,14 @@ import { Provider } from "react-redux";
 import appStore from "./store/appStore";
 import AdvancedShutter from "./components/shutter/AdvancedShutter";
 import SearchScreenHeader from "./components/headers/SearchScreenHeader";
+import TrendingScreenHeader from "./components/headers/TrendingScreenHeader";
+import NewImageFeedScreen from "./screens/NewImageFeedScreen";
+import ImageFeedScreenHeader from "./components/headers/ImageFeedScreenHeader";
+import HashtagInfoScreen from "./screens/HashtagInfoScreen";
+import HashTagInfoScreenHeader from "./components/headers/HashTagInfoScreenHeader";
+import ProfileScreen from "./screens/ProfileScreen";
+import ProfileHeader from "./components/headers/ProfileHeader";
+import SavedDataScreen from "./screens/SavedDataScreen";
 
 enableScreens(true);
 
@@ -57,7 +63,6 @@ const App = () => {
 
         //enable the splash screen to render while assets are loading
         await SplashScreen.preventAutoHideAsync();
-
         //calling the function that loads the fonts asin
         await Promise.all(loadFontsAsync([appTextFonts]));
       } catch (error) {
@@ -88,13 +93,17 @@ const App = () => {
     <Provider store={appStore}>
       <NavigationContainer onReady={appReadyCallback}>
         <MainTabNavigation.Navigator
-          initialRouteName="SearchResult"
+          initialRouteName="Profile"
           tabBar={(props) => <AdvancedShutter {...props} />}
           backBehavior="history"
         >
           <MainTabNavigation.Screen
             name="ImageFeed"
-            component={ImageFeedScreen}
+            component={NewImageFeedScreen}
+            options={{
+              headerShown: true,
+              header: (props) => <ImageFeedScreenHeader {...props} />,
+            }}
           />
           <MainTabNavigation.Screen
             name="SearchResult"
@@ -108,16 +117,27 @@ const App = () => {
           <MainTabNavigation.Screen
             name="Profile"
             component={ProfileScreen}
-            options={{ headerShown: false }}
+            options={{
+              header: (props) => <ProfileHeader {...props} />,
+            }}
           />
           <MainTabNavigation.Screen
             name="Trending"
             component={TrendingScreen}
-            options={{ headerShown: false }}
+            options={{
+              header: (props: BottomTabHeaderProps) => (
+                <TrendingScreenHeader {...props} />
+              ),
+            }}
           />
           <MainTabNavigation.Screen
             name="Notification"
             component={NotificationScreen}
+          />
+          <MainTabNavigation.Screen
+            name="SavedData"
+            component={SavedDataScreen}
+            options={{ headerShown: false }}
           />
         </MainTabNavigation.Navigator>
       </NavigationContainer>

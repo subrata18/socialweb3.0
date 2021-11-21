@@ -1,8 +1,8 @@
 import { StyleSheet } from "react-native";
 import React, { useCallback, useMemo, useState } from "react";
-import { MediumText, RegularText } from "../../utility/ui/appText";
-import { THERESHOLDLENGTH } from "../../utility/constants/appConstants";
-import { CollapseTextProps } from "../../utility/types/other_types";
+import { CollapseTextProps } from "../../utility/types";
+import { THERESHOLDLENGTH } from "../../utility/constants";
+import { MediumText, RegularText } from "../../utility/ui";
 
 const CollapsibleText = ({ content, style }: CollapseTextProps) => {
   const length = content.length;

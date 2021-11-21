@@ -1,5 +1,5 @@
 import { createEntityAdapter, createSlice } from "@reduxjs/toolkit";
-import { User } from "../../utility/types/store_types";
+import { User } from "../../utility/types";
 
 //defining the normalize user entity
 const UserEntity = createEntityAdapter<User>({

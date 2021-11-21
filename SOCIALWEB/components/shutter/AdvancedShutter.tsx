@@ -9,7 +9,7 @@ import {
 } from "react-native-gesture-handler";
 import useShutterAnimation from "../../hooks/useShutterAnimation";
 import {
-  SHUTTER_ABSOLUTE_TOP_POSITION,
+  SHUTTER_ABSOLUTE_BOTTOM_POSITION,
   SHUTTER_HEIGHT,
   SHUTTER_OVERLAY_MAX_OPACITY,
   SHUTTER_TRANSLATION_ANIMATION_DURATION,
@@ -18,9 +18,9 @@ import {
   SHUTTER_TRANSLATION_Y_MIN,
   WINDOW_HEIGHT,
   WINDOW_WIDTH,
-} from "../../utility/constants/appConstants";
-import { globalColors } from "../../utility/style/colors";
-import AnimatedSafeAreaView from "../../utility/ui/animatedSafeAreaView";
+} from "../../utility/constants";
+import { globalColors } from "../../utility/styles";
+import { AnimatedSafeAreaView } from "../../utility/ui";
 import MainTabNavigationBar from "./MainTabNavigationBar";
 import ShutterBody from "./ShutterBody";
 import ShutterFooter from "./ShutterFooter";
@@ -171,6 +171,7 @@ const AdvancedShutter = (props: BottomTabBarProps) => {
       {/* conditionally render the overlay with transparent background when shutter drag is active */}
       {isOverlayVisible && (
         <AnimatedSafeAreaView
+          edges={[]}
           style={[
             globalColors.shutterOverlayColor,
             styles.shutterOverlay,
@@ -206,7 +207,7 @@ const AdvancedShutter = (props: BottomTabBarProps) => {
             animationControlData={animationControlData}
           />
           {/* this is the body of the shutter contains the secondary navigation icons */}
-          <ShutterBody />
+          <ShutterBody {...props} />
           {/* this is the footer section of the shutter contains the additional
            control icons of a specific screen */}
           <ShutterFooter />
@@ -228,7 +229,7 @@ const styles = StyleSheet.create({
     alignContent: "center",
     zIndex: 4,
     height: SHUTTER_HEIGHT,
-    top: SHUTTER_ABSOLUTE_TOP_POSITION,
+    bottom: SHUTTER_ABSOLUTE_BOTTOM_POSITION,
   },
   shutterOverlay: {
     width: WINDOW_WIDTH,

@@ -1,9 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { getImagePostFeed } from "../../utility/clients/imagePostClient";
-import {
-  AppError,
-  ImageFeedScreenResponse,
-} from "../../utility/types/api_types";
+import { getImagePostFeed } from "../../utility/clients";
+import { AppError, ImageFeedScreenResponse } from "../../utility/types";
 import { AppDispatch, RootState } from "../appStore";
 
 export interface ImageFeedRequest {

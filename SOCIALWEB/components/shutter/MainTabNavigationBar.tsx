@@ -1,11 +1,12 @@
 import React, { useCallback } from "react";
-import { Feather, AntDesign, FontAwesome5, Ionicons } from "@expo/vector-icons";
-import GenericTabBarIcon from "./GenericTabBarIcon";
-import AnimatedSafeAreaView from "../../utility/ui/animatedSafeAreaView";
-import { globalColors } from "../../utility/style/colors";
 import useShutterAnimation from "../../hooks/useShutterAnimation";
-import { Animated, StyleSheet } from "react-native";
-import { MainTabNavigationBarProps } from "../../utility/types/other_types";
+import { StyleSheet } from "react-native";
+import Icon from "../global/Icon";
+import ProfileIcon from "./ProfileIcon";
+import { MainTabNavigationBarProps } from "../../utility/types";
+import { AnimatedSafeAreaView } from "../../utility/ui";
+import { globalColors } from "../../utility/styles";
+import { SIZE_REF_14, SIZE_REF_16, SIZE_REF_8 } from "../../utility/constants";
 
 const MainTabNavigationBar = ({
   state,
@@ -48,63 +49,73 @@ const MainTabNavigationBar = ({
         //because both transition effect is same and depend on the same atomic value
         shutterBorderDynamicStyle,
       ]}
-      edges={["left", "right"]}
+      edges={[]}
     >
-      {state.routes.map((item, index) => {
+      {state.routes.slice(0, 5).map((item, index) => {
         switch (item.name) {
           case "ImageFeed":
             return (
-              <GenericTabBarIcon
-                key={index}
-                onPress={tabIconPressHandler}
-                routeName="ImageFeed"
-              >
-                <Feather name="camera" size={24} color="black" />
-              </GenericTabBarIcon>
+              <Icon
+                name={
+                  state.routeNames[state.index] === "ImageFeed"
+                    ? "camera-solid"
+                    : "camera-outline"
+                }
+                color="black"
+                size={SIZE_REF_16 + SIZE_REF_14}
+                onPress={() => tabIconPressHandler("ImageFeed")}
+                key={"icon" + index}
+              />
             );
           case "SearchResult":
             return (
-              <GenericTabBarIcon
-                key={index}
-                onPress={tabIconPressHandler}
-                routeName="SearchResult"
-              >
-                <Feather name="search" size={24} color="black" />
-              </GenericTabBarIcon>
+              <Icon
+                name={
+                  state.routeNames[state.index] === "SearchResult"
+                    ? "search-bold"
+                    : "search-regular"
+                }
+                color="black"
+                size={SIZE_REF_16 + SIZE_REF_14}
+                onPress={() => tabIconPressHandler("SearchResult")}
+                key={"icon" + index}
+              />
             );
           case "Profile":
             return (
-              <GenericTabBarIcon
-                key={index}
-                onPress={tabIconPressHandler}
-                routeName="Profile"
-              >
-                <AntDesign name="profile" size={24} color="black" />
-              </GenericTabBarIcon>
+              <ProfileIcon
+                key={"icon" + index}
+                style={{ transform: [{ translateY: -8 }] }}
+                size={SIZE_REF_8 * 6}
+              />
             );
           case "Trending":
             return (
-              <GenericTabBarIcon
-                key={index}
-                onPress={tabIconPressHandler}
-                routeName="Trending"
-              >
-                <FontAwesome5 name="hotjar" size={24} color="black" />
-              </GenericTabBarIcon>
+              <Icon
+                name={
+                  state.routeNames[state.index] === "Trending"
+                    ? "trending-solid"
+                    : "trending-outline"
+                }
+                color="black"
+                size={SIZE_REF_16 + SIZE_REF_14}
+                onPress={() => tabIconPressHandler("Trending")}
+                key={"icon" + index}
+              />
             );
           case "Notification":
             return (
-              <GenericTabBarIcon
-                key={index}
-                onPress={tabIconPressHandler}
-                routeName="Notification"
-              >
-                <Ionicons
-                  name="notifications-outline"
-                  size={24}
-                  color="black"
-                />
-              </GenericTabBarIcon>
+              <Icon
+                name={
+                  state.routeNames[state.index] === "Notification"
+                    ? "notification-solid"
+                    : "notification-outline"
+                }
+                color="black"
+                size={SIZE_REF_16 + SIZE_REF_14}
+                onPress={() => tabIconPressHandler("Notification")}
+                key={"icon" + index}
+              />
             );
         }
       })}

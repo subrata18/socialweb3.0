@@ -4,7 +4,7 @@ import {
   SHUTTER_TOP_RADIUS,
   SHUTTER_TRANSLATION_Y_MAX,
   SHUTTER_TRANSLATION_Y_MIN,
-} from "../utility/constants/appConstants";
+} from "../utility/constants";
 
 const useShutterAnimation = (animationControlData: Animated.Value) => {
   const shutterBorderDynamicStyle = useMemo(

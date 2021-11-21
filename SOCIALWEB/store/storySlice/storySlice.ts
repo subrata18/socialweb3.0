@@ -1,5 +1,5 @@
 import { createEntityAdapter, createSlice } from "@reduxjs/toolkit";
-import { Story } from "../../utility/types/store_types";
+import { Story } from "../../utility/types";
 
 //defining normalized version of StoryEntity
 const StoryEntity = createEntityAdapter<Story>({

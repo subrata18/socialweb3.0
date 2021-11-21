@@ -4,17 +4,14 @@ import {
   createSlice,
 } from "@reduxjs/toolkit";
 import {
-  CommentResponse,
-  ImagePostResponse,
-  ReplyResponse,
-} from "../../utility/types/api_types";
-import {
   Comment,
+  CommentResponse,
   ImagePost,
   ImagePostMetaState,
+  ImagePostResponse,
   Reply,
-  taskState,
-} from "../../utility/types/store_types";
+  ReplyResponse,
+} from "../../utility/types";
 import { RootState } from "../appStore";
 import { getImageFeedThunk } from "./imagePostReducer";
 
@@ -27,10 +24,11 @@ const replyResponseToReplyMapper = (data: ReplyResponse): Reply => {
     timestamp: data.timestamp,
     likeInfo: {
       noOfLikes: data.likeInfo.noOfLikes,
-      likeList: data.likeInfo.likeList?.map((item) => ({
+      likeList: data.likeInfo.pageInfo.list?.map((item) => ({
         id: item.userInfo.id,
         timestamp: item.timestamp,
       })),
+      isLiked: data.likeInfo.isLiked,
     },
   };
   return result;
@@ -44,15 +42,16 @@ const commentResponseToCommentMapper = (data: CommentResponse): Comment => {
     content: data.content,
     likeInfo: {
       noOfLikes: data.likeInfo.noOfLikes,
-      likeList: data.likeInfo.likeList?.map((item) => ({
+      likeList: data.likeInfo.pageInfo.list?.map((item) => ({
         id: item.userInfo.id,
         timestamp: item.timestamp,
       })),
+      isLiked: data.likeInfo.isLiked,
     },
     timestamp: data.timestamp,
     replyInfo: {
       noOfReply: data.replyInfo.noOfReply,
-      replyList: data.replyInfo.replyList?.map((item) =>
+      replyList: data.replyInfo.pageInfo.list?.map((item) =>
         replyResponseToReplyMapper(item)
       ),
     },
@@ -73,13 +72,13 @@ const imagePostResponseToImagePostMapper = (
     commentInfo: {
       noOfComments: data.commentInfo.noOfComments,
       filteredUsers: data.commentInfo.filteredUsers,
-      commentList: data.commentInfo.commentList?.map((item) =>
+      commentList: data.commentInfo.pageInfo.list?.map((item) =>
         commentResponseToCommentMapper(item)
       ),
     },
     likeInfo: {
       noOfLikes: data.likeInfo.noOfLikes,
-      likeList: data.likeInfo.likeList?.map((item) => ({
+      likeList: data.likeInfo.pageInfo.list?.map((item) => ({
         id: item.userInfo.id,
         timestamp: item.timestamp,
       })),
@@ -89,7 +88,7 @@ const imagePostResponseToImagePostMapper = (
     timestamp: data.timestamp,
     shareInfo: {
       noOfShares: data.shareInfo.noOfShares,
-      shareList: data.shareInfo.shareList?.map((item) => ({
+      shareList: data.shareInfo.pageInfo.list?.map((item) => ({
         id: item.userInfo.id,
         timestamp: item.timestamp,
       })),
@@ -97,7 +96,7 @@ const imagePostResponseToImagePostMapper = (
     },
     tagInfo: {
       noOfTags: data.tagInfo.noOfTags,
-      tagList: data.tagInfo.tagList?.map((item) => item.id),
+      tagList: data.tagInfo.pageInfo.list?.map((item) => item.id),
     },
   };
   return result;
@@ -137,15 +136,12 @@ const imagePostSlice = createSlice({
         if (imagePostFeedResult) {
           //update the current requested feed page no
           state.imagePostInitialMetaState.imagePostFeedMeta.currentFeedPageNo =
-            imagePostFeedResult.pageInfo.pageNo;
+            imagePostFeedResult.pageNo;
 
           const imagePostFeedListResult = imagePostFeedResult.list;
           // if new data is available in the current page map them to corresponding ImagePost type
           //and add them to the image post entity
-          if (
-            imagePostFeedListResult &&
-            imagePostFeedResult.pageInfo.pageLength > 0
-          ) {
+          if (imagePostFeedListResult && imagePostFeedResult.pageLength > 0) {
             const feedList: ImagePost[] = [];
             imagePostFeedListResult.forEach((item) => {
               state.imagePostInitialMetaState.imagePostFeedMeta.feedList.push(
