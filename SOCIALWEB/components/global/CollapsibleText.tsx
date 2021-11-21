@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
 import React, { useCallback, useMemo, useState } from "react";
-import { MediumText, RegularText } from "../../utility/ui/appText";
+import { MediumText, RegularText } from "../../utility/ui";
 import { THERESHOLDLENGTH } from "../../utility/constants/appConstants";
 import { CollapseTextProps } from "../../utility/types/other_types";
 import { SafeAreaView } from "react-native-safe-area-context";

@@ -1,11 +1,8 @@
 import React from "react";
 import { Pressable, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import {
-  FONT_SIZE_REF_12,
-  GAP_SIZE_REF_4,
-} from "../../utility/constants/appConstants";
-import { MediumText } from "../../utility/ui/appText";
+import { SIZE_REF_12, SIZE_REF_4 } from "../../utility/constants";
+import { MediumText } from "../../utility/ui";
 
 const HashTag = ({ id }: { id: string }) => {
   return (
@@ -24,12 +21,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flexWrap: "nowrap",
     backgroundColor: "#EBE8FB",
-    borderRadius: 12,
-    padding: GAP_SIZE_REF_4,
+    borderRadius: SIZE_REF_12,
+    padding: SIZE_REF_4,
   },
   hashtagText: {
-    marginHorizontal: GAP_SIZE_REF_4,
-    fontSize: FONT_SIZE_REF_12,
+    marginHorizontal: SIZE_REF_4,
+    fontSize: SIZE_REF_12,
   },
 });
 

@@ -1,81 +1,144 @@
 import React from "react";
-import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
-import { SearchScreenNavigationParamList } from "../utility/types/navigation_types";
-import ImageGallery from "../components/ImageGallery";
-import VideoCollection from "../components/VideoColletion";
-import HashTagList from "../components/HashtTagList";
-import UserList from "../components/UserList";
+import {
+  createMaterialTopTabNavigator,
+  MaterialTopTabNavigationOptions,
+} from "@react-navigation/material-top-tabs";
+import ImageGallery from "../screens/ImageGallery";
+import VideoCollection from "../screens/VideoColletion";
+import UserList from "../screens/UserList";
 import Icon from "../components/global/Icon";
+import HashTagListTab from "../screens/HashtTagListTab";
+import { SearchScreenNavigationParamList } from "../utility/types";
+import {
+  SHUTTER_HEIGHT,
+  SIZE_REF_14,
+  SIZE_REF_16,
+  WINDOW_HEIGHT,
+  WINDOW_WIDTH,
+} from "../utility/constants";
 
 const SearchScreenNavigator =
   createMaterialTopTabNavigator<SearchScreenNavigationParamList>();
 
+const defaultScreenOptions: MaterialTopTabNavigationOptions = {
+  tabBarShowLabel: false,
+  tabBarAllowFontScaling: true,
+  tabBarPressColor: "transparent",
+  tabBarPressOpacity: 1,
+  tabBarInactiveTintColor: "black",
+  tabBarActiveTintColor: "black",
+  tabBarIndicatorStyle: {
+    backgroundColor: "black",
+  },
+  tabBarIndicatorContainerStyle: {
+    borderBottomWidth: 1,
+    borderBottomColor: "#D1CBCB",
+  },
+  tabBarStyle: {
+    elevation: 0,
+    shadowOpacity: 0,
+  },
+};
+
+const initialScreenLayout = {
+  width: WINDOW_WIDTH,
+  height: WINDOW_HEIGHT,
+};
+
+const userListOptions: MaterialTopTabNavigationOptions = {
+  tabBarIcon: ({ color, focused }) =>
+    focused ? (
+      <Icon name="user-solid" color={color} size={SIZE_REF_16 + SIZE_REF_14} />
+    ) : (
+      <Icon
+        name="user-outline"
+        color={color}
+        size={SIZE_REF_16 + SIZE_REF_14}
+      />
+    ),
+};
+
+const hashtagListOptions: MaterialTopTabNavigationOptions = {
+  tabBarIcon: ({ color, focused }) =>
+    focused ? (
+      <Icon
+        name="hashtag-solid"
+        color={color}
+        size={SIZE_REF_16 + SIZE_REF_14}
+      />
+    ) : (
+      <Icon
+        name="hashtag-outline"
+        color={color}
+        size={SIZE_REF_16 + SIZE_REF_14}
+      />
+    ),
+};
+
+const imageGalleryOptions: MaterialTopTabNavigationOptions = {
+  tabBarIcon: ({ color, focused }) =>
+    focused ? (
+      <Icon
+        name="camera-solid"
+        color={color}
+        size={SIZE_REF_16 + SIZE_REF_14}
+      />
+    ) : (
+      <Icon
+        name="camera-outline"
+        color={color}
+        size={SIZE_REF_16 + SIZE_REF_14}
+      />
+    ),
+};
+
+const videoCollectionOptions: MaterialTopTabNavigationOptions = {
+  tabBarIcon: ({ color, focused }) =>
+    focused ? (
+      <Icon name="video-solid" color={color} size={SIZE_REF_16 + SIZE_REF_14} />
+    ) : (
+      <Icon
+        name="video-outline"
+        color={color}
+        size={SIZE_REF_16 + SIZE_REF_14}
+      />
+    ),
+};
+
 const SearchScreenNavigation = () => {
   return (
     <SearchScreenNavigator.Navigator
-      screenOptions={{
-        tabBarShowLabel: false,
-        tabBarAllowFontScaling: true,
-        tabBarPressColor: "transparent",
-        tabBarPressOpacity: 1,
-        tabBarInactiveTintColor: "black",
-        tabBarActiveTintColor: "black",
-        tabBarIndicatorStyle: {
-          backgroundColor: "black",
-        },
-        tabBarIndicatorContainerStyle: {
-          borderBottomWidth: 1,
-          borderBottomColor: "#D1CBCB",
-        },
+      keyboardDismissMode="on-drag"
+      overdrag={true}
+      initialLayout={initialScreenLayout}
+      backBehavior="none"
+      orientation="vertical"
+      overScrollMode="always"
+      transitionStyle="scroll"
+      screenOptions={defaultScreenOptions}
+      sceneContainerStyle={{
+        paddingBottom: Math.floor((SHUTTER_HEIGHT * 4) / 25),
       }}
     >
       <SearchScreenNavigator.Screen
         name="UserList"
         component={UserList}
-        options={{
-          tabBarIcon: ({ color, focused }) =>
-            focused ? (
-              <Icon name="heart-solid" color={color} size={30} />
-            ) : (
-              <Icon name="heart-outline" color={color} size={30} />
-            ),
-        }}
+        options={userListOptions}
       />
       <SearchScreenNavigator.Screen
         name="HashTagList"
-        component={HashTagList}
-        options={{
-          tabBarIcon: ({ color, focused }) =>
-            focused ? (
-              <Icon name="heart-solid" color={color} size={30} />
-            ) : (
-              <Icon name="heart-outline" color={color} size={30} />
-            ),
-        }}
+        component={HashTagListTab}
+        options={hashtagListOptions}
       />
       <SearchScreenNavigator.Screen
         name="ImageGallery"
         component={ImageGallery}
-        options={{
-          tabBarIcon: ({ color, focused }) =>
-            focused ? (
-              <Icon name="heart-solid" color={color} size={30} />
-            ) : (
-              <Icon name="heart-outline" color={color} size={30} />
-            ),
-        }}
+        options={imageGalleryOptions}
       />
       <SearchScreenNavigator.Screen
         name="VideoCollection"
         component={VideoCollection}
-        options={{
-          tabBarIcon: ({ color, focused }) =>
-            focused ? (
-              <Icon name="heart-solid" color={color} size={30} />
-            ) : (
-              <Icon name="heart-outline" color={color} size={30} />
-            ),
-        }}
+        options={videoCollectionOptions}
       />
     </SearchScreenNavigator.Navigator>
   );

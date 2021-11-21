@@ -1,8 +1,8 @@
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import ImageFeedPostHeader from "../components/ImageFeedPostHeader";
-import ImageFeedPostControls from "../components/ImageFeedPostControls";
-import ImageFeedSinglePost from "../components/ImageFeedSinglePost";
+import ImageFeedPostHeader from "../components/imagePost/ImageFeedPostHeader";
+import ImageFeedPostControls from "../components/imagePost/ImageFeedPostControls";
+import ImageFeedSinglePost from "../components/imagePost/ImageFeedSinglePost";
 import { StyleSheet } from "react-native";
 import CollapsibleText from "./global/CollapsibleText";
 

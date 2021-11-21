@@ -1,6 +1,6 @@
 import { SafeAreaView } from "react-native-safe-area-context";
-import { globalColors } from "../utility/style/colors";
-import { globalLayouts } from "../utility/style/layout";
+import { globalColors } from "../utility/styles";
+import { globalLayouts } from "../utility/styles";
 import React, { useEffect } from "react";
 import { ListRenderItemInfo, StyleSheet } from "react-native";
 import StoryFeed from "../components/StoryFeed";
@@ -20,7 +20,6 @@ import { FlatList } from "react-native-gesture-handler";
 const renderItem = (item: ListRenderItemInfo<string>) => {
     return <ImageFeedPost id={item.item} />;
 };
-
 const ImageFeedScreen = () => {
     //get the app dispatch to dispatch the feed request thunk
     const storeDispatch = useAppDispatch();

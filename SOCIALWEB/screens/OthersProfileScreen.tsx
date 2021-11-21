@@ -1,48 +1,64 @@
+import { ListRenderItemInfo, StatusBar, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { globalColors } from "../utility/style/colors";
-import { globalLayouts } from "../utility/style/layout";
 import React from "react";
+import NameValuePair from "../components/profile/NameValuePair";
+import RoundedIcon from "../components/global/RoundedIcon";
+import { ScrollView } from "react-native-gesture-handler";
+import HighlightedLink from "../components/profile/ResourceContainer";
+import Avatar from "../components/global/Avatar";
 import {
-  PROFILE_BIO_TEXT_SIZE,
-  PROFILE_ICON_GAP,
-  PROFILE_LINK_CONTAINER_MARGIN,
-  PROFILE_META_CONTAINER_PADDING,
-  PROFILE_META_LINK_GAP,
-  PROFILE_NAME_VALUE_PAIR_GAP,
-  PROFILE_SCREEN_PADDING,
+  IconAndButtonWrapper,
+  MetaDataWrapper,
+  MetaIconWrapper,
+  RootWrapper,
+} from "../components/profile/wrapper";
+import HighlightedContentList from "../components/global/HighlightedContentList";
+import SwippableTabNavigator, {
+  CustomMaterialScreen,
+} from "../components/global/CustomMaterialNavigator";
+import ImageGallery from "./ImageGallery";
+import VideoCollection from "./VideoColletion";
+import StoryBook from "./StoryBook";
+import SolidButton from "../components/profile/SolidButton";
+import { globalColors, globalLayouts } from "../utility/styles";
+import {
+  SIZE_REF_10,
+  SIZE_REF_12,
+  SIZE_REF_14,
+  SIZE_REF_16,
+  SIZE_REF_4,
+  SIZE_REF_8,
+  TAB_INDICATOR_HEIGHT,
   WINDOW_HEIGHT,
   WINDOW_WIDTH,
-} from "../utility/constants/appConstants";
-import { StyleSheet } from "react-native";
-import VideoCollection from "../components/VideoColletion";
-import StoryBook from "../components/StoryBook";
-import ImageGallery from "../components/ImageGallery";
-import SwippableTabNavigator, {
-  SwippableTabScreen,
-} from "../components/global/CustomMaterialNavigator";
-import HighlightedLink from "../components/ResourceContainer";
-import { ScrollView } from "react-native-gesture-handler";
-import { RegularText } from "../utility/ui/appText";
-import SolidButton from "../components/SolidButton";
-import RoundedIcon from "../components/RoundedIcon";
-import NameValuePair from "../components/NameValuePair";
-import AvatarUserIdPair from "../components/AvatarUserIdPair";
+} from "../utility/constants";
+import { RegularText } from "../utility/ui";
+
+const data = ["1", "1", "1", "1", "1", "1", "1", "1"];
+const renderItem = (item: ListRenderItemInfo<string>) => (
+  <HighlightedLink iconName="video-solid" title="checkout new video" url="" />
+);
+const keyExtractor = (_: string, index?: number) => "item" + index;
 
 const OthersProfileScreen = () => {
   return (
     <SafeAreaView
-      style={[globalLayouts.screenLayout, globalColors.screenColor]}
       edges={["left", "right"]}
+      style={[globalLayouts.screenLayout, globalColors.screenColor]}
     >
+      <StatusBar hidden={true} />
       <ScrollView
         showsVerticalScrollIndicator={false}
         style={[styles.wrapperScrollbar]}
-        stickyHeaderIndices={[3]}
+        stickyHeaderIndices={[2]}
       >
-        <SafeAreaView edges={[]} style={[styles.avatarMetaIconWrapper]}>
-          <AvatarUserIdPair />
-          <SafeAreaView edges={[]} style={[styles.metaIconWrapper]}>
-            <SafeAreaView edges={[]} style={[styles.metadataContainer]}>
+        <RootWrapper style={[styles.avatarMetaIconWrapper]}>
+          <Avatar
+            size={80}
+            url="https://images.news18.com/ibnlive/uploads/2021/07/1627673437_kiara-advani.jpg"
+          />
+          <MetaIconWrapper>
+            <MetaDataWrapper style={[styles.metadataContainer]}>
               <NameValuePair name="uploads" value="400" />
               <NameValuePair name="followers" value="12M" style={styles.icon} />
               <NameValuePair
@@ -50,96 +66,83 @@ const OthersProfileScreen = () => {
                 value="212"
                 style={styles.icon}
               />
-            </SafeAreaView>
-            <SafeAreaView edges={[]} style={[styles.iconContainer]}>
+            </MetaDataWrapper>
+            <IconAndButtonWrapper>
               <RoundedIcon
                 color="black"
                 dragEnabled={false}
                 tapEnabled={false}
-                name="tag"
-                size={30}
+                name="message-outline"
+                size={SIZE_REF_10 * 4}
+                scale={0.8}
               />
               <RoundedIcon
                 color="black"
                 dragEnabled={false}
                 tapEnabled={false}
-                name="more-option"
-                size={30}
+                name="mention-regular"
+                size={SIZE_REF_10 * 4}
+                scale={0.8}
                 style={styles.icon}
               />
               <RoundedIcon
                 color="black"
                 dragEnabled={false}
                 tapEnabled={false}
-                name="tag"
-                size={30}
+                name="notification-outline"
+                size={SIZE_REF_10 * 4}
+                scale={0.8}
                 style={styles.icon}
               />
-            </SafeAreaView>
-          </SafeAreaView>
-        </SafeAreaView>
-        <SolidButton
-          title="follow"
-          onPress={() => {}}
-          style={[styles.button]}
-        />
-        <SafeAreaView edges={[]} style={[styles.bioLinkWrapper]}>
+            </IconAndButtonWrapper>
+          </MetaIconWrapper>
+        </RootWrapper>
+        <MetaIconWrapper style={[styles.bioLinkWrapper]}>
+          <SolidButton
+            onPress={() => {}}
+            title="follow"
+            style={styles.button}
+          />
           <RegularText style={[styles.bioText]}>
             hello this is a demo capton to chek the visibility of captions in
             full screen mode of the image post and it is quite allright this is
             the best app on the group of social media and i am new here but
             already amused with this app :)
           </RegularText>
-          <SafeAreaView edges={[]} style={[styles.linkContainer]}>
-            <ScrollView
-              showsHorizontalScrollIndicator={false}
-              horizontal={true}
-              scrollEventThrottle={1}
-            >
-              <HighlightedLink
-                iconName="heart-solid"
-                title="checkout my merchendice"
-                url=""
-                style={{ marginRight: 4 }}
-              />
-              <HighlightedLink
-                iconName="heart-solid"
-                title="see vlog"
-                url=""
-                style={{ marginRight: 4 }}
-              />
-              <HighlightedLink
-                iconName="heart-solid"
-                title="new video out"
-                url=""
-                style={{ marginRight: 4 }}
-              />
-              <HighlightedLink
-                iconName="heart-solid"
-                title="new show tickets"
-                url=""
-              />
-            </ScrollView>
-          </SafeAreaView>
-        </SafeAreaView>
-        <SwippableTabNavigator width={WINDOW_WIDTH} height={WINDOW_HEIGHT}>
-          <SwippableTabScreen
+          <HighlightedContentList
+            data={data}
+            keyExtractor={keyExtractor}
+            renderItem={renderItem}
+            style={styles.linkContainer}
+          />
+        </MetaIconWrapper>
+        <SwippableTabNavigator
+          width={WINDOW_WIDTH}
+          height={
+            WINDOW_HEIGHT -
+            (0.1 * WINDOW_HEIGHT +
+              SIZE_REF_12 +
+              SIZE_REF_14 +
+              TAB_INDICATOR_HEIGHT)
+          }
+        >
+          <CustomMaterialScreen
             target={<ImageGallery />}
-            activeColor="black"
-            inActiveColor="grey"
-            icon="heart-outline"
+            activeIcon="camera-solid"
+            inActiveIcon="camera-outline"
+            size={SIZE_REF_12 + SIZE_REF_14}
           />
-          <SwippableTabScreen
+          <CustomMaterialScreen
             target={<VideoCollection />}
-            activeColor="black"
-            inActiveColor="grey"
-            icon="heart-outline"
+            activeIcon="video-solid"
+            inActiveIcon="video-outline"
+            size={SIZE_REF_12 + SIZE_REF_14}
           />
-          <SwippableTabScreen
+          <CustomMaterialScreen
             target={<StoryBook />}
-            activeColor="black"
-            inActiveColor="grey"
-            icon="heart-outline"
+            activeIcon="around-clock-bold"
+            inActiveIcon="around-clock-regular"
+            size={SIZE_REF_12 + SIZE_REF_14}
           />
         </SwippableTabNavigator>
       </ScrollView>
@@ -148,65 +151,35 @@ const OthersProfileScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  button: {
-    alignSelf: "flex-start",
-    marginLeft: PROFILE_SCREEN_PADDING,
-    marginBottom: PROFILE_META_LINK_GAP,
-  },
   nameValuePair: {
-    marginLeft: PROFILE_NAME_VALUE_PAIR_GAP,
+    marginLeft: SIZE_REF_16,
   },
   icon: {
-    marginLeft: PROFILE_ICON_GAP,
+    marginLeft: SIZE_REF_16,
   },
   wrapperScrollbar: {
     flex: 1,
     width: "100%",
   },
   bioText: {
-    fontSize: PROFILE_BIO_TEXT_SIZE,
+    fontSize: SIZE_REF_12,
+    paddingHorizontal: SIZE_REF_4,
   },
   linkContainer: {
-    width: "100%",
-    marginTop: PROFILE_LINK_CONTAINER_MARGIN,
+    marginTop: SIZE_REF_10,
   },
   bioLinkWrapper: {
     width: "100%",
-    flexDirection: "column",
-    flexWrap: "nowrap",
-    alignItems: "stretch",
-    justifyContent: "space-between",
-    paddingHorizontal: PROFILE_SCREEN_PADDING,
-    paddingBottom: PROFILE_LINK_CONTAINER_MARGIN,
+    marginBottom: SIZE_REF_16,
   },
   metadataContainer: {
-    flexDirection: "row",
-    flexWrap: "nowrap",
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingBottom: PROFILE_META_CONTAINER_PADDING,
-  },
-  iconContainer: {
-    flexDirection: "row",
-    flexWrap: "nowrap",
-    alignItems: "center",
-    justifyContent: "space-between",
-  },
-  metaIconWrapper: {
-    flexDirection: "column",
-    flexWrap: "nowrap",
-    justifyContent: "flex-end",
-    alignItems: "flex-start",
+    marginBottom: SIZE_REF_16,
   },
   avatarMetaIconWrapper: {
-    flexWrap: "nowrap",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "stretch",
-    width: "100%",
-    paddingHorizontal: PROFILE_SCREEN_PADDING,
-    paddingBottom: PROFILE_META_LINK_GAP,
+    marginBottom: SIZE_REF_16,
+    marginTop: SIZE_REF_8 * 3,
   },
+  button: { marginLeft: SIZE_REF_16, marginBottom: SIZE_REF_16 },
 });
 
 export default OthersProfileScreen;

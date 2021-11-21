@@ -1,9 +1,9 @@
 import React, { useMemo } from "react";
 import { Animated, StyleProp, StyleSheet, ViewStyle } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { WINDOW_WIDTH } from "../../utility/constants/appConstants";
-import { CarosolProps } from "../../utility/types/other_types";
-import AnimatedSafeAreaView from "../../utility/ui/animatedSafeAreaView";
+import { WINDOW_WIDTH } from "../../utility/constants";
+import { CarosolProps } from "../../utility/types";
+import { AnimatedSafeAreaView } from "../../utility/ui";
 
 const Carosol = ({
   activeDotSize,

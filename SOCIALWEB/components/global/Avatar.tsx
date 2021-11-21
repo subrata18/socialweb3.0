@@ -2,8 +2,8 @@ import React, { useMemo } from "react";
 import { StyleProp, StyleSheet, ViewStyle } from "react-native";
 import FastImage, { ImageStyle, Source } from "react-native-fast-image";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { AVATAR_PHOTO_TO_GAP_RATIO } from "../../utility/constants/appConstants";
-import { AvatarProps } from "../../utility/types/other_types";
+import { AVATAR_PHOTO_TO_GAP_RATIO } from "../../utility/constants";
+import { AvatarProps } from "../../utility/types";
 
 const Avatar = ({ size, url, style }: AvatarProps) => {
   //source of the image with high priority and immutable caching mechanism
