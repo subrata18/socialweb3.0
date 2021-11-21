@@ -19,14 +19,14 @@ const SearchBar = () => {
   );
 
   return (
-    <SafeAreaView style={styles.searchBar} edges={["left", "right"]}>
-      <TextInput
-        value={searchValue}
-        placeholder="search..."
-        onChangeText={textChangeCallback}
-        style={styles.searchInput}
-      />
-    </SafeAreaView>
+      <SafeAreaView style={styles.searchBar} edges={["left", "right"]}>
+          <TextInput
+              value={searchValue}
+              placeholder="search..."
+              onChangeText={textChangeCallback}
+              style={styles.searchInput}
+          />
+      </SafeAreaView>
   );
 };
 

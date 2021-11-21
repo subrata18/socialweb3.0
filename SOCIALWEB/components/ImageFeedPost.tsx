@@ -11,24 +11,24 @@ const ImageFeedPost = (props: { id: string }) => {
   const width = Math.floor(Math.random() * 400) + 100;
 
   return (
-    <SafeAreaView
-      edges={["left", "right"]}
-      style={[styles.imageFeedPostContainer]}
-    >
-      <ImageFeedPostHeader />
-      <ImageFeedSinglePost
-        url={`https://source.unsplash.com/random/${width}x${height}`}
-        width={width}
-        height={height}
-      />
-      <ImageFeedPostControls />
-      <CollapsibleText
-        content="hello this is a demo capton to chek the visibility of captions 
-        in full screen mode of the image post and it is quite allright
-        this is the best app on the group of social media
-        and i am new here but already amused with this app :)"
-      />
-    </SafeAreaView>
+      <SafeAreaView
+          edges={["left", "right"]}
+          style={[styles.imageFeedPostContainer]}
+      >
+          <ImageFeedPostHeader />
+          <ImageFeedSinglePost
+              url={`https://source.unsplash.com/random/${width}x${height}`}
+              width={width}
+              height={height}
+          />
+          <ImageFeedPostControls />
+          <CollapsibleText>
+              hello this is a demo capton to chek the visibility of captions in
+              full screen mode of the image post and it is quite allright this
+              is the best app on the group of social media and i am new here but
+              already amused with this app :)
+          </CollapsibleText>
+      </SafeAreaView>
   );
 };
 

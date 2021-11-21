@@ -3,7 +3,7 @@ import { Dimensions } from "react-native";
 export const WINDOW_WIDTH = Dimensions.get("window").width;
 export const WINDOW_HEIGHT = Dimensions.get("window").height;
 
-export const THERESHOLDLENGTH = 15;
+export const THERESHOLDLENGTH = 30;
 
 export const IMAGE_POST_MIN_HEIGHT = 200;
 export const IMAGE_POST_MAX_HEIGHT = 500;
