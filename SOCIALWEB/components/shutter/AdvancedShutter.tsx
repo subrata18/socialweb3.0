@@ -25,7 +25,30 @@ import MainTabNavigationBar from "./MainTabNavigationBar";
 import ShutterBody from "./ShutterBody";
 import ShutterFooter from "./ShutterFooter";
 
-const AdvancedShutter = (props: BottomTabBarProps) => {
+const AdvancedShutter = ({ navigation, state }: BottomTabBarProps) => {
+  //generic navigation icon press handler that navigates to a specific screen depending on the
+  //icon pressed and currently active screen
+  const tabIconPressHandler = useCallback(
+    (routeName: string) => {
+      //manually emitting the 'tabPress' navigation event that can be handled by the target screen
+      const tabPressEvent = navigation.emit({
+        type: "tabPress",
+        target: routeName,
+        canPreventDefault: true,
+      });
+
+      //if the current screen is not the target screen and the default behavior of the 'tabPress' event is not
+      //prevented then navigate to the target screen
+      if (
+        routeName !== state.routeNames[state.index] &&
+        !tabPressEvent.defaultPrevented
+      ) {
+        navigation.navigate(routeName);
+      }
+    },
+    [navigation.navigate, navigation.emit, state.routeNames, state.index]
+  );
+
   //atomic integer that controls all the  shutter transition (i.e border-top-radius, overlay-opacity)
   const animationControlData = useRef<Animated.Value>(
     new Animated.Value(0) //default value starts with 0
@@ -203,11 +226,18 @@ const AdvancedShutter = (props: BottomTabBarProps) => {
         >
           {/* shutter header component that works as the main tab naivagtor of the app */}
           <MainTabNavigationBar
-            {...props}
             animationControlData={animationControlData}
+            onTabPress={tabIconPressHandler}
+            routes={state.routeNames}
+            activeIndex={state.index}
           />
           {/* this is the body of the shutter contains the secondary navigation icons */}
-          <ShutterBody {...props} />
+          <ShutterBody
+            animationControlData={animationControlData}
+            onTabPress={tabIconPressHandler}
+            routes={state.routeNames}
+            activeIndex={state.index}
+          />
           {/* this is the footer section of the shutter contains the additional
            control icons of a specific screen */}
           <ShutterFooter />

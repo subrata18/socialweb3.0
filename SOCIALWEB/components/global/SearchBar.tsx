@@ -1,10 +1,9 @@
 import React, { useCallback, useState } from "react";
-import { StyleProp, StyleSheet, TextInput, ViewStyle } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { StyleProp, StyleSheet, TextInput, TextStyle } from "react-native";
 import { SIZE_REF_10, SIZE_REF_2, SIZE_REF_6 } from "../../utility/constants";
 
 export interface SearchBarProps {
-  style?: StyleProp<ViewStyle>;
+  style?: StyleProp<TextStyle>;
 }
 
 const SearchBar = ({ style }: SearchBarProps) => {
@@ -19,26 +18,22 @@ const SearchBar = ({ style }: SearchBarProps) => {
   );
 
   return (
-    <SafeAreaView style={[styles.searchBar, style]} edges={["left", "right"]}>
-      <TextInput
-        value={searchValue}
-        placeholder="search..."
-        onChangeText={textChangeCallback}
-        style={styles.searchInput}
-      />
-    </SafeAreaView>
+    <TextInput
+      value={searchValue}
+      placeholder="search..."
+      onChangeText={textChangeCallback}
+      style={styles.searchInput}
+    />
   );
 };
 
 const styles = StyleSheet.create({
-  searchBar: {
-    flex: 1,
-    backgroundColor: "#EBE8FB",
-    borderRadius: SIZE_REF_10,
-  },
   searchInput: {
     paddingHorizontal: SIZE_REF_6,
     paddingVertical: SIZE_REF_2,
+    backgroundColor: "#EBE8FB",
+    flex: 1,
+    borderRadius: SIZE_REF_10,
   },
 });
 

@@ -1,5 +1,10 @@
 import { StyleSheet } from "react-native";
-import { SIZE_REF_8, WINDOW_HEIGHT, WINDOW_WIDTH } from "./constants";
+import {
+  HEADER_HEIGHT,
+  SIZE_REF_8,
+  WINDOW_HEIGHT,
+  WINDOW_WIDTH,
+} from "./constants";
 
 export const globalColors = StyleSheet.create({
   screenColor: {
@@ -67,11 +72,10 @@ export const globalLayouts = StyleSheet.create({
   },
   headerLayout: {
     width: "100%",
-    height: 0.1 * WINDOW_HEIGHT,
+    height: HEADER_HEIGHT,
     flexDirection: "row",
     flexWrap: "nowrap",
     alignItems: "center",
     justifyContent: "space-between",
-    paddingHorizontal: SIZE_REF_8,
   },
 });

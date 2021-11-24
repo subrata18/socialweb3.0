@@ -1,3 +1,13 @@
+import { NavigatorScreenParams } from "@react-navigation/core";
+import { ReactElement } from "react";
+import {
+  Animated,
+  PanResponderInstance,
+  StyleProp,
+  TextStyle,
+  ViewStyle,
+} from "react-native";
+
 //defining the generic id and timestamp pair interface
 export interface IdTimeStampPair {
   id: string; //generic id
@@ -15,28 +25,6 @@ export interface ImageInfo {
   url: string; //url of the image
   width: number; //width of the image in pixels
   height: number; //height of the image in pixels
-}
-
-//a datastructure to represent comment reply
-export interface Reply {
-  id: string; //id of the reply/comment
-  content: string; //content of the reply/comment
-  author: string; //author user id of the reply/comment
-  timestamp: number; //timestamp of creation
-  likeInfo: {
-    //list of the user ids who liked the comment/reply
-    noOfLikes: number;
-    likeList?: IdTimeStampPair[];
-    isLiked: boolean;
-  };
-}
-
-//defining the data structure of Comment
-export interface Comment extends Reply {
-  replyInfo: {
-    noOfReply: number;
-    replyList?: Reply[];
-  };
 }
 
 //utility type to represent any aribtrary task state
@@ -249,14 +237,60 @@ export interface AppError {
   };
 }
 
-export type MainTabNavigationParamList = {
-  ImageFeed: undefined;
-  Profile: undefined;
-  SearchResult: undefined;
-  Trending: undefined;
-  Notification: undefined;
-  SavedData: undefined;
-};
+//hashtag info respose type
+export interface HashTagResponse {
+  id: string;
+  name: string;
+  saveInfo: {
+    //save  information
+    noOfSaves: number;
+    pageInfo: PageInfoResponse<UserInfoResponse>;
+    isSaved: boolean;
+  };
+  uploads: {
+    //post information
+    noOfUploads: number; //total number of posts
+    imagePost: {
+      //image post information
+      noOfImagePosts: number;
+      pageInfo: PageInfoResponse<ImagePostResponse>;
+    };
+  };
+}
+
+//user info response type
+export interface UserResponse {
+  id: string; //userid
+  socialId: string; //unique social id
+  username: string; //optional username
+  storyInfo: {
+    //user story informition
+    noOfStories: number; //number of seen and unseen stories
+    hasUnSeenStory: boolean; //is the logged in user has yet to see any story of this user
+    pageInfo: PageInfoResponse<Story>; //id of the stories
+  };
+  followerInfo: {
+    //follower information
+    noOfFollowers: number; //total number of followers
+    followerList?: string[]; //list of userids
+    isFollower: boolean;
+  };
+  followingInfo: {
+    //following  information
+    noOfFollowing: number; //total number of followings
+    followingList?: string[]; //list of the userids
+    isFollowing: boolean;
+  };
+  posts: {
+    //post information
+    noOfPosts: number; //total number of posts
+    imagePost: {
+      //image post information
+      noOfImagePosts: number;
+      imagePostList?: string[];
+    };
+  };
+}
 
 export type SearchScreenNavigationParamList = {
   ImageGallery: undefined;
@@ -265,15 +299,28 @@ export type SearchScreenNavigationParamList = {
   UserList: undefined;
 };
 
-import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
-import { ReactElement } from "react";
-import {
-  Animated,
-  PanResponderInstance,
-  StyleProp,
-  TextStyle,
-  ViewStyle,
-} from "react-native";
+export type UtilityStackNavigatorParamList = {
+  OthersProfileScreen: undefined;
+  SearchResultScreen: undefined;
+};
+
+export type RootTabNavigatorParamList = {
+  ImageFeedScreen: undefined;
+  VideoFeedScreen: undefined;
+  ProfileScreen: undefined;
+  TrendingScreen: undefined;
+  NotificationScreen: undefined;
+  SavedDataScreen: undefined;
+  SettingsScreen: undefined;
+  Stacks: NavigatorScreenParams<UtilityStackNavigatorParamList>;
+};
+
+export type RootStackNavigatorParamList = {
+  Tabs: NavigatorScreenParams<RootTabNavigatorParamList>;
+  LiveScreen: undefined;
+  StoryFeedScreen: undefined;
+  PostMetaInfoStack: undefined;
+};
 
 export interface GenericTabBarIconProps {
   children: React.ReactNode;
@@ -312,8 +359,17 @@ export interface NameValuePairProps {
 
 //a utility props type that includes th e animation control data to control the tab bar transition along
 //with the default props (i.e navigation, state)
-export type MainTabNavigationBarProps = BottomTabBarProps & {
+export interface MainTabNavigationBarProps {
   animationControlData: Animated.Value;
+  onTabPress: (route: string) => void;
+  routes: string[];
+  activeIndex: number;
+}
+
+export type PostMetaNavigatorParamList = {
+  CommentTab: undefined;
+  LikeTab: undefined;
+  ShareTab: undefined;
 };
 
 export interface AvatarProps {
@@ -400,4 +456,70 @@ export interface AvatarSocialIdPairProps {
   fontSize: number;
   gapSize: number;
   style?: StyleProp<ViewStyle>;
+}
+
+export interface Link {
+  title: string;
+  url: string;
+  icon: string;
+}
+
+export interface CountListPair<T> {
+  count: number;
+  list: T[];
+}
+
+//-----------------------------------------------------api-types--------------------------------------------------
+export interface UserEntity {
+  id: string;
+  socialId: string;
+  timestamp: number;
+  username: string;
+  profilePictureUrl: string;
+  bio: string;
+  links: CountListPair<Link>;
+  followerInfo: CountListPair<IdTimeStampPair>;
+  followingInfo: CountListPair<IdTimeStampPair>;
+  uploads: {
+    noOfUploads: number;
+    imagePost: CountListPair<string>;
+  };
+}
+
+export interface HashTagEntity {
+  id: string;
+  name: string;
+  saveInfo: CountListPair<IdTimeStampPair>;
+  uploads: {
+    noOfUploads: number;
+    imagePost: CountListPair<string>;
+  };
+}
+
+export interface Reply {
+  id: string;
+  content: string;
+  author: string;
+  timestamp: number;
+  likeInfo: CountListPair<IdTimeStampPair>;
+}
+
+export interface Comment extends Reply {
+  replyInfo: CountListPair<Reply>;
+}
+
+export interface MetaData {
+  likeInfo: CountListPair<IdTimeStampPair>;
+  commentInfo: CountListPair<Comment>;
+  shareInfo: CountListPair<IdTimeStampPair>;
+}
+
+export interface ImagePostEntity {
+  id: string;
+  timestamp: number;
+  author: string;
+  images: ImageInfo | ImageInfo[];
+  caption: string;
+  hashtags: string[];
+  metadeta: MetaData;
 }

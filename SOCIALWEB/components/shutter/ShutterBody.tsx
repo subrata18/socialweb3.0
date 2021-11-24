@@ -1,5 +1,4 @@
-import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
-import React, { useCallback, useMemo, useRef } from "react";
+import React, { useCallback, useRef } from "react";
 import {
   Animated,
   NativeScrollEvent,
@@ -15,10 +14,15 @@ import {
   SIZE_REF_6,
 } from "../../utility/constants";
 import { globalColors } from "../../utility/styles";
+import { MainTabNavigationBarProps } from "../../utility/types";
 import RoundedIcon from "../global/RoundedIcon";
 import ShutterBodyListItem from "./ShutterBodyListItem";
 
-const ShutterBody = ({ navigation, state }: BottomTabBarProps) => {
+const ShutterBody = ({
+  onTabPress,
+  activeIndex,
+  routes,
+}: MainTabNavigationBarProps) => {
   //atomic value that controls the animation based on the scroll content offset
   const scrollX = useRef<Animated.Value>(new Animated.Value(0)).current;
 
@@ -31,27 +35,38 @@ const ShutterBody = ({ navigation, state }: BottomTabBarProps) => {
     [scrollX]
   );
 
-  //generic navigation icon press handler that navigates to a specific screen depending on the
-  //icon pressed and currently active screen
-  const tabIconPressHandler = useCallback(
-    (routeName: string) => {
-      //manually emitting the 'tabPress' navigation event that can be handled by the target screen
-      const tabPressEvent = navigation.emit({
-        type: "tabPress",
-        target: routeName,
-        canPreventDefault: true,
-      });
+  const navigateToImageFeedScreen = useCallback(
+    () => onTabPress("ImageFeedScreen"),
+    []
+  );
 
-      //if the current screen is not the target screen and the default behavior of the 'tabPress' event is not
-      //prevented then navigate to the target screen
-      if (
-        routeName !== state.routeNames[state.index] &&
-        !tabPressEvent.defaultPrevented
-      ) {
-        navigation.navigate(routeName);
-      }
-    },
-    [navigation.navigate, navigation.emit, state.routeNames, state.index]
+  const navigateToVideoFeedScreen = useCallback(
+    () => onTabPress("VideoFeedScreen"),
+    []
+  );
+
+  const navigateToProfileScreen = useCallback(
+    () => onTabPress("ProfileScreen"),
+    []
+  );
+
+  const navigateToTrendingScreen = useCallback(
+    () => onTabPress("TrendingScreen"),
+    []
+  );
+
+  const navigateToNotificationScreen = useCallback(
+    () => onTabPress("NotificationScreen"),
+    []
+  );
+  const navigateToSavedScreen = useCallback(
+    () => onTabPress("SavedDataScreen"),
+    []
+  );
+
+  const navigateToSettingsScreen = useCallback(
+    () => onTabPress("SettingsScreen"),
+    []
   );
 
   return (
@@ -69,50 +84,95 @@ const ShutterBody = ({ navigation, state }: BottomTabBarProps) => {
           onScroll={scrollCallback}
         >
           <ShutterBodyListItem>
-            <RoundedIcon
-              name={
-                state.routeNames[state.index] === "SavedData"
-                  ? "bookmark-solid"
-                  : "bookmark-outline"
+            {routes.slice(5).map((item, index) => {
+              switch (item) {
+                case "VideoFeedScreen":
+                  return (
+                    <RoundedIcon
+                      name={
+                        routes[activeIndex] === "VideoFeedScreen"
+                          ? "video-solid"
+                          : "video-outline"
+                      }
+                      color="black"
+                      size={SIZE_REF_6 * 7}
+                      scale={0.7}
+                      style={styles.icon}
+                      tapEnabled={true}
+                      onTap={navigateToVideoFeedScreen}
+                      key={"item" + index}
+                    />
+                  );
+                case "TrendingScreen":
+                  return (
+                    <RoundedIcon
+                      name={
+                        routes[activeIndex] === "TrendingScreen"
+                          ? "trending-solid"
+                          : "trending-outline"
+                      }
+                      color="black"
+                      size={SIZE_REF_6 * 7}
+                      scale={0.7}
+                      style={styles.icon}
+                      tapEnabled={true}
+                      onTap={navigateToTrendingScreen}
+                      key={"item" + index}
+                    />
+                  );
+                case "NotificationScreen":
+                  return (
+                    <RoundedIcon
+                      name={
+                        routes[activeIndex] === "NotificationScreen"
+                          ? "notification-solid"
+                          : "notification-outline"
+                      }
+                      color="black"
+                      size={SIZE_REF_6 * 7}
+                      scale={0.7}
+                      style={styles.icon}
+                      tapEnabled={true}
+                      onTap={navigateToNotificationScreen}
+                      key={"item" + index}
+                    />
+                  );
+                case "SavedDataScreen":
+                  return (
+                    <RoundedIcon
+                      name={
+                        routes[activeIndex] === "SavedDataScreen"
+                          ? "bookmark-solid"
+                          : "bookmark-outline"
+                      }
+                      color="black"
+                      size={SIZE_REF_6 * 7}
+                      scale={0.7}
+                      style={styles.icon}
+                      tapEnabled={true}
+                      onTap={navigateToSavedScreen}
+                      key={"item" + index}
+                    />
+                  );
+                case "SettingsScreen":
+                  return (
+                    <RoundedIcon
+                      name={
+                        routes[activeIndex] === "SettingsScreen"
+                          ? "gear-solid"
+                          : "gear-outline"
+                      }
+                      color="black"
+                      size={SIZE_REF_6 * 7}
+                      scale={0.7}
+                      style={styles.icon}
+                      tapEnabled={true}
+                      onTap={navigateToSettingsScreen}
+                      key={"item" + index}
+                    />
+                  );
               }
-              color="black"
-              size={SIZE_REF_6 * 7}
-              scale={0.7}
-              style={styles.icon}
-              tapEnabled={true}
-              onTap={() => {
-                console.log("clicked");
-                tabIconPressHandler("SavedData");
-              }}
-            />
-            <RoundedIcon
-              name="live-outline"
-              color="black"
-              size={SIZE_REF_6 * 7}
-              scale={0.7}
-              style={styles.icon}
-            />
-            <RoundedIcon
-              name="group-outline"
-              color="black"
-              size={SIZE_REF_6 * 7}
-              scale={0.7}
-              style={styles.icon}
-            />
-            <RoundedIcon
-              name="gear-outline"
-              color="black"
-              size={SIZE_REF_6 * 7}
-              scale={0.7}
-              style={styles.icon}
-            />
-            <RoundedIcon
-              name="message-outline"
-              color="black"
-              size={SIZE_REF_6 * 7}
-              scale={0.7}
-              style={styles.icon}
-            />
+            })}
           </ShutterBodyListItem>
         </ScrollView>
       </SafeAreaView>
