@@ -40,11 +40,6 @@ const defaultScreenOptions: MaterialTopTabNavigationOptions = {
   },
 };
 
-const initialScreenLayout = {
-  width: WINDOW_WIDTH,
-  height: WINDOW_HEIGHT,
-};
-
 const hashtagListOptions: MaterialTopTabNavigationOptions = {
   tabBarIcon: ({ color, focused }) =>
     focused ? (
@@ -97,7 +92,6 @@ const SavedScreenNavigation = () => {
     <SearchScreenNavigator.Navigator
       keyboardDismissMode="on-drag"
       overdrag={true}
-      initialLayout={initialScreenLayout}
       backBehavior="none"
       orientation="vertical"
       overScrollMode="always"

@@ -59,3 +59,5 @@ export const IMAGE_POST_MIN_HEIGHT = 150;
 export const IMAGE_POST_MAX_HEIGHT = 400;
 
 export const AVATAR_PHOTO_TO_GAP_RATIO = 2.5 / 64;
+
+export const HEADER_HEIGHT = 0.09 * WINDOW_HEIGHT;

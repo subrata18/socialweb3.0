@@ -9,36 +9,47 @@ import { globalColors } from "../../utility/styles";
 import { SIZE_REF_14, SIZE_REF_16, SIZE_REF_8 } from "../../utility/constants";
 
 const MainTabNavigationBar = ({
-  state,
-  navigation,
   animationControlData,
+  onTabPress,
+  activeIndex,
+  routes,
 }: MainTabNavigationBarProps) => {
-  //generic navigation icon press handler that navigates to a specific screen depending on the
-  //icon pressed and currently active screen
-  const tabIconPressHandler = useCallback(
-    (routeName: string) => {
-      //manually emitting the 'tabPress' navigation event that can be handled by the target screen
-      const tabPressEvent = navigation.emit({
-        type: "tabPress",
-        target: routeName,
-        canPreventDefault: true,
-      });
-
-      //if the current screen is not the target screen and the default behavior of the 'tabPress' event is not
-      //prevented then navigate to the target screen
-      if (
-        routeName !== state.routeNames[state.index] &&
-        !tabPressEvent.defaultPrevented
-      ) {
-        navigation.navigate(routeName);
-      }
-    },
-    [navigation.navigate, navigation.emit, state.routeNames, state.index]
-  );
-
   const { shutterBorderDynamicStyle } =
     useShutterAnimation(animationControlData);
 
+  const navigateToImageFeedScreen = useCallback(
+    () => onTabPress("ImageFeedScreen"),
+    []
+  );
+
+  const navigateToVideoFeedScreen = useCallback(
+    () => onTabPress("VideoFeedScreen"),
+    []
+  );
+
+  const navigateToProfileScreen = useCallback(
+    () => onTabPress("ProfileScreen"),
+    []
+  );
+
+  const navigateToTrendingScreen = useCallback(
+    () => onTabPress("TrendingScreen"),
+    []
+  );
+
+  const navigateToNotificationScreen = useCallback(
+    () => onTabPress("NotificationScreen"),
+    []
+  );
+  const navigateToSavedScreen = useCallback(
+    () => onTabPress("SavedDataScreen"),
+    []
+  );
+
+  const navigateToSettingsScreen = useCallback(
+    () => onTabPress("SettingsScreen"),
+    []
+  );
   //iterate through all the route names and render the appropriate navigation icons for each routeName
   return (
     <AnimatedSafeAreaView
@@ -51,69 +62,98 @@ const MainTabNavigationBar = ({
       ]}
       edges={[]}
     >
-      {state.routes.slice(0, 5).map((item, index) => {
-        switch (item.name) {
-          case "ImageFeed":
+      {routes.slice(0, 5).map((item, index) => {
+        switch (item) {
+          case "ImageFeedScreen":
             return (
               <Icon
                 name={
-                  state.routeNames[state.index] === "ImageFeed"
+                  routes[activeIndex] === "ImageFeedScreen"
                     ? "camera-solid"
                     : "camera-outline"
                 }
                 color="black"
                 size={SIZE_REF_16 + SIZE_REF_14}
-                onPress={() => tabIconPressHandler("ImageFeed")}
+                onPress={navigateToImageFeedScreen}
                 key={"icon" + index}
               />
             );
-          case "SearchResult":
+          case "VideoFeedScreen":
             return (
               <Icon
                 name={
-                  state.routeNames[state.index] === "SearchResult"
-                    ? "search-bold"
-                    : "search-regular"
+                  routes[activeIndex] === "VideoFeedScreen"
+                    ? "video-solid"
+                    : "video-outline"
                 }
                 color="black"
                 size={SIZE_REF_16 + SIZE_REF_14}
-                onPress={() => tabIconPressHandler("SearchResult")}
+                onPress={navigateToVideoFeedScreen}
                 key={"icon" + index}
               />
             );
-          case "Profile":
+          case "ProfileScreen":
             return (
               <ProfileIcon
                 key={"icon" + index}
                 style={{ transform: [{ translateY: -8 }] }}
                 size={SIZE_REF_8 * 6}
+                onPress={navigateToProfileScreen}
               />
             );
-          case "Trending":
+          case "TrendingScreen":
             return (
               <Icon
                 name={
-                  state.routeNames[state.index] === "Trending"
+                  routes[activeIndex] === "TrendingScreen"
                     ? "trending-solid"
                     : "trending-outline"
                 }
                 color="black"
                 size={SIZE_REF_16 + SIZE_REF_14}
-                onPress={() => tabIconPressHandler("Trending")}
+                onPress={navigateToTrendingScreen}
                 key={"icon" + index}
               />
             );
-          case "Notification":
+          case "NotificationScreen":
             return (
               <Icon
                 name={
-                  state.routeNames[state.index] === "Notification"
+                  routes[activeIndex] === "NotificationScreen"
                     ? "notification-solid"
                     : "notification-outline"
                 }
                 color="black"
                 size={SIZE_REF_16 + SIZE_REF_14}
-                onPress={() => tabIconPressHandler("Notification")}
+                onPress={navigateToNotificationScreen}
+                key={"icon" + index}
+              />
+            );
+          case "SavedDataScreen":
+            return (
+              <Icon
+                name={
+                  routes[activeIndex] === "SavedDataScreen"
+                    ? "bookmark-solid"
+                    : "bookmark-outline"
+                }
+                color="black"
+                size={SIZE_REF_16 + SIZE_REF_14}
+                onPress={navigateToSavedScreen}
+                key={"icon" + index}
+              />
+            );
+          case "SettingsScreen":
+            return (
+              <Icon
+                name={
+                  routes[activeIndex] === "SettingsScreen"
+                    ? "gear-solid"
+                    : "gear-outline"
+                }
+                color="black"
+                size={SIZE_REF_16 + SIZE_REF_14}
+                onPress={navigateToSettingsScreen}
                 key={"icon" + index}
               />
             );
