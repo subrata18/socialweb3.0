@@ -458,6 +458,8 @@ export interface AvatarSocialIdPairProps {
   style?: StyleProp<ViewStyle>;
 }
 
+//-----------------------------------------------------api-types--------------------------------------------------
+
 export interface Link {
   title: string;
   url: string;
@@ -469,7 +471,6 @@ export interface CountListPair<T> {
   list: T[];
 }
 
-//-----------------------------------------------------api-types--------------------------------------------------
 export interface UserEntity {
   id: string;
   socialId: string;
@@ -484,6 +485,15 @@ export interface UserEntity {
     noOfUploads: number;
     imagePost: CountListPair<string>;
   };
+  saves: {
+    noOfSaves: number;
+    imagePost: CountListPair<string>;
+    hashtags: CountListPair<string>;
+  };
+  tags: {
+    noOfTags: number;
+    imagePost: CountListPair<string>;
+  };
 }
 
 export interface HashTagEntity {
@@ -496,30 +506,30 @@ export interface HashTagEntity {
   };
 }
 
-export interface Reply {
+export interface GenericData {
   id: string;
-  content: string;
-  author: string;
   timestamp: number;
+  author: string;
+}
+
+export interface PostMetaData {
+  likeInfo: CountListPair<IdTimeStampPair>;
+  commentInfo: CountListPair<Comment>;
+  shareInfo: CountListPair<IdTimeStampPair>;
+  tagInfo: CountListPair<IdTimeStampPair>;
+  hashTagInfo: CountListPair<string>;
+}
+
+export interface ImagePostEntity extends GenericData, PostMetaData {
+  images: ImageInfo | ImageInfo[];
+  caption: string;
+}
+
+export interface Reply extends GenericData {
+  content: string;
   likeInfo: CountListPair<IdTimeStampPair>;
 }
 
 export interface Comment extends Reply {
   replyInfo: CountListPair<Reply>;
-}
-
-export interface MetaData {
-  likeInfo: CountListPair<IdTimeStampPair>;
-  commentInfo: CountListPair<Comment>;
-  shareInfo: CountListPair<IdTimeStampPair>;
-}
-
-export interface ImagePostEntity {
-  id: string;
-  timestamp: number;
-  author: string;
-  images: ImageInfo | ImageInfo[];
-  caption: string;
-  hashtags: string[];
-  metadeta: MetaData;
 }
