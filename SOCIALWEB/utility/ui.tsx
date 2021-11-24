@@ -10,6 +10,7 @@ import fontelloConfig from "../config.json";
 import { createIconSetFromFontello } from "@expo/vector-icons";
 import { SIZE_REF_8 } from "./constants";
 import { FlatList } from "react-native-gesture-handler";
+import React from "react";
 
 export const AnimatedSafeAreaView =
   Animated.createAnimatedComponent(SafeAreaView);

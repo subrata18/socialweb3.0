@@ -199,10 +199,10 @@ export interface ReplyResponse {
 
 // a specific comment data response
 export interface CommentResponse extends ReplyResponse {
-  replyInfo: {
-    noOfReply: number;
-    pageInfo: PageInfoResponse<ReplyResponse>;
-  };
+    replyInfo: {
+        noOfReply: number;
+        pageInfo: PageInfoResponse<ReplyResponse>;
+    };
 }
 
 //a specific image post response
