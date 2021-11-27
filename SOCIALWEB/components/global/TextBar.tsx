@@ -1,18 +1,18 @@
-import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import React, { useCallback } from "react";
+import { Pressable, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { SIZE_REF_2 } from "../../utility/constants";
 import {
     GAP_SIZE_REF_14,
     GAP_SIZE_REF_16,
     GAP_SIZE_REF_2,
-    GAP_SIZE_REF_4,
-    SIZE_REF_16,
+    GAP_SIZE_REF_6,
 } from "../../utility/constants/appConstants";
 import CustomTextInput from "./CustomTextInput";
 import Icon from "./Icon";
 
 const TextBar = () => {
+    const sendTextHandler = useCallback(() => {}, []);
+
     return (
         <SafeAreaView style={styles.container}>
             <SafeAreaView style={styles.textBar}>
@@ -23,7 +23,7 @@ const TextBar = () => {
                 />
                 <SafeAreaView style={styles.iconHolder}>
                     <Icon
-                        name="message-outline"
+                        name="paperclip"
                         size={28}
                         onPress={() => {}}
                         color="black"
@@ -37,14 +37,18 @@ const TextBar = () => {
                 </SafeAreaView>
             </SafeAreaView>
             <SafeAreaView style={styles.buttonContainer}>
-                <SafeAreaView style={styles.button}>
+                <Pressable
+                    style={styles.button}
+                    android_ripple={{ color: "grey", borderless: true }}
+                    onPress={sendTextHandler}
+                >
                     <Icon
                         name="send"
                         size={28}
                         onPress={() => {}}
                         color="white"
                     />
-                </SafeAreaView>
+                </Pressable>
             </SafeAreaView>
         </SafeAreaView>
     );
@@ -61,7 +65,7 @@ const styles = StyleSheet.create({
     },
     textBar: {
         flexDirection: "row",
-        alignItems: "center",
+        alignItems: "flex-end",
         justifyContent: "space-around",
         width: "85%",
         maxHeight: 100,
@@ -72,17 +76,19 @@ const styles = StyleSheet.create({
     iconHolder: {
         flexDirection: "row",
         width: "20%",
-        justifyContent: "space-evenly",
+        justifyContent: "space-between",
+        padding: GAP_SIZE_REF_6,
     },
     buttonContainer: {
-        width: "10%",
+        width: "15%",
+        justifyContent: "flex-end",
+        alignItems: "center",
     },
     button: {
-        padding: GAP_SIZE_REF_2,
-        justifyContent: "center",
-        alignItems: "center",
-        width: "100%",
-        borderRadius: GAP_SIZE_REF_16,
         backgroundColor: "#6A53F8",
+        borderRadius: GAP_SIZE_REF_16,
+        alignItems: "center",
+        width: "65%",
+        padding: GAP_SIZE_REF_6,
     },
 });

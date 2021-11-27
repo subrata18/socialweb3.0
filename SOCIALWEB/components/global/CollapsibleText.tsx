@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
         color: "gray",
     },
     textContainer: {
-        width: "90%",
+        width: "95%",
         flexDirection: "row",
         alignContent: "flex-start",
         flexWrap: "nowrap",

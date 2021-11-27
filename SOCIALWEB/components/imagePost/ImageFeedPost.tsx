@@ -29,25 +29,27 @@ const ImageFeedPost = (props: { id: string }) => {
   const width = Math.floor(Math.random() * 720) + 360;
 
   return (
-    <SafeAreaView edges={[]} style={[styles.imageFeedPostContainer]}>
-      <ImageFeedPostHeader />
-      <ImageFeedSinglePost
-        url={`https://source.unsplash.com/random/${width}x${height}`}
-        width={width}
-        height={height}
-      />
-      <ImageFeedPostControls />
-      <HighlightedContentList
-        data={data}
-        keyExtractor={keyExtarctor}
-        renderItem={renderItem}
-        style={styles.hashtagList}
-      />
-      <CollapsibleText
-        content="hello this is a demo capton to chek the visibility of captions in full screen mode of the image post and it is quite allright this is the best app on the group of social media and i am new here but already amused with this app :)"
-        style={styles.captionText}
-      />
-    </SafeAreaView>
+      <SafeAreaView edges={[]} style={[styles.imageFeedPostContainer]}>
+          <ImageFeedPostHeader />
+          <ImageFeedSinglePost
+              url={`https://source.unsplash.com/random/${width}x${height}`}
+              width={width}
+              height={height}
+          />
+          <ImageFeedPostControls />
+          <HighlightedContentList
+              data={data}
+              keyExtractor={keyExtarctor}
+              renderItem={renderItem}
+              style={styles.hashtagList}
+          />
+          <CollapsibleText style={styles.captionText}>
+              hello this is a demo capton to chek the visibility of captions in
+              full screen mode of the image post and it is quite allright this
+              is the best app on the group of social media and i am new here but
+              already amused with this app :)
+          </CollapsibleText>
+      </SafeAreaView>
   );
 };
 

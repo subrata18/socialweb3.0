@@ -1,16 +1,14 @@
-import React, { useCallback, useState } from "react";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import React, { useCallback } from "react";
+import { Pressable, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import {
     FONT_SIZE_REF_12,
     FONT_SIZE_REF_14,
     FONT_SIZE_REF_16,
-    GAP_SIZE_REF_2,
     GAP_SIZE_REF_4,
-    GAP_SIZE_REF_6,
 } from "../utility/constants/appConstants";
 import { UserChatContactProps } from "../utility/types/other_types";
-import { BoldText, RegularText } from "../utility/ui/appText";
+import { BoldText, RegularText } from "../utility/ui";
 import Badge from "./Badge";
 import Avatar from "./global/Avatar";
 
