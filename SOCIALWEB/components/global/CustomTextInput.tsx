@@ -1,12 +1,10 @@
 import React, { useCallback, useState } from "react";
 import { StyleProp, StyleSheet, ViewStyle } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
-// import { SafeAreaView } from "react-native-safe-area-context";
 import {
     GAP_SIZE_REF_4,
     GAP_SIZE_REF_8,
 } from "../../utility/constants/appConstants";
-// import Icon from "./Icon";
 
 const CustomTextInput = ({
     placeHolder,
@@ -14,6 +12,7 @@ const CustomTextInput = ({
     secureTextEntry,
     style,
     maxLength,
+    inputChangeHandler,
     otherProps,
 }: {
     placeHolder: string;
@@ -21,12 +20,14 @@ const CustomTextInput = ({
     multiLine?: boolean;
     secureTextEntry?: boolean;
     style?: StyleProp<ViewStyle>;
+    inputChangeHandler?: (text: string) => void;
     otherProps?: any;
 }) => {
     const [textValue, setTextValue] = useState<string>("");
     const textChangeHandler = useCallback(
         (text: string) => {
             setTextValue(text);
+            // inputChangeHandler(text);
         },
         [textValue]
     );
@@ -53,41 +54,3 @@ const styles = StyleSheet.create({
         paddingHorizontal: GAP_SIZE_REF_8,
     },
 });
-
-{
-    /* <SafeAreaView edges={[]} style={styles.iconContainer}>
-    <Icon
-        name="heart-outline"
-        color="black"
-        size={22}
-        onPress={cameraHandler}
-    />
-    <Icon
-        name="heart-outline"
-        color="black"
-        size={22}
-        onPress={selectFileHandler}
-    />
-</SafeAreaView>; */
-}
-
-// const cameraHandler = useCallback(() => {}, []);
-// const selectFileHandler = useCallback(() => {}, []);
-
-// iconContainer: {
-//         flexDirection: "row",
-//         justifyContent: "space-around",
-//         alignItems: "flex-end",
-//         width: "15%",
-//         paddingVertical: SIZE_REF_6,
-//     },
-
-// container: {
-//         width: "85%",
-//         borderRadius: SIZE_REF_16,
-//         flexDirection: "row",
-//         justifyContent: "space-between",
-//         backgroundColor: "#EBEDFB",
-//         paddingHorizontal: GAP_SIZE_REF_10,
-//         paddingVertical: GAP_SIZE_REF_2,
-//     },

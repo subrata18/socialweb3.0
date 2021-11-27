@@ -12,6 +12,7 @@ import Icon from "./Icon";
 
 const TextBar = () => {
     const sendTextHandler = useCallback(() => {}, []);
+    const textChangeHandler = (text: string) => {};
 
     return (
         <SafeAreaView style={styles.container}>
@@ -20,6 +21,7 @@ const TextBar = () => {
                     placeHolder="Message"
                     multiLine={true}
                     style={{ paddingHorizontal: GAP_SIZE_REF_14 }}
+                    inputChangeHandler={textChangeHandler}
                 />
                 <SafeAreaView style={styles.iconHolder}>
                     <Icon
